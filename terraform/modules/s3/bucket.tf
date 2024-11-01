@@ -14,7 +14,7 @@ resource "aws_s3_bucket_policy" "site_policy" {
         Effect    = "Allow"
         Principal = "*"
         Action    = "s3:GetObject"
-        Resource  = "${aws_s3_bucket.site_bucket.arn}/*"
+        Resource  = "${aws_s3_bucket.site_bucket.arn}/site/*"
         Condition = {
           Bool = {
             "aws:SecureTransport" : "true"
@@ -29,11 +29,11 @@ resource "aws_s3_bucket_website_configuration" "site_config" {
   bucket = aws_s3_bucket.site_bucket.id
 
   index_document {
-    suffix = "home.html" # Based on your static site files
+    suffix = "site/home.html"
   }
 
   error_document {
-    key = "error.html"
+    key = "site/error.html"
   }
 }
 
