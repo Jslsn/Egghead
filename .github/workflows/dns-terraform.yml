@@ -1,0 +1,109 @@
+name: "DNS Terraform Plan/Apply"
+
+on:
+  workflow_call:
+    inputs:
+      domain_name:
+        required: true
+        type: string
+      bucket_regional_domain_name:
+        required: true
+        type: string
+      bucket_hosted_zone_id:
+        required: true
+        type: string
+      bucket_name:
+        required: true
+        type: string
+      aws_region:
+        required: true
+        type: string
+
+jobs:
+  terraform-plan:
+    name: "Terraform Plan"
+    runs-on: ubuntu-latest
+    outputs:
+      tfplanExitCode: ${{ steps.tf-plan.outputs.exitcode }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+
+      - name: AWS Assume
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE }}
+          role-session-name: GH-AWS-OIDC
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Terraform Init
+        run: |
+          terraform init \
+          -backend-config=region=${{ secrets.AWS_REGION }} \
+          -backend-config=bucket=${{ secrets.AWS_S3_BUCKET }} \
+          -backend-config=key="jslsn/just-listen-site/dns/terraform.tfstate" \
+          -backend-config=dynamodb_table=${{ secrets.AWS_DDB }} \
+          -backend-config=encrypt=true
+        working-directory: terraform/deployments/dns
+
+      - name: Terraform Plan
+        id: tf-plan
+        run: |
+          export exitcode=0
+          terraform plan -detailed-exitcode -no-color -out tfplan || export exitcode=$?
+
+          echo "exitcode=$exitcode" >> $GITHUB_OUTPUT
+        working-directory: terraform/deployments/dns
+
+      - name: Publish Terraform Plan
+        uses: actions/upload-artifact@v4
+        with:
+          name: tfplan-dns
+          path: terraform/deployments/dns/tfplan
+
+  terraform-apply:
+    name: "Terraform Apply"
+    runs-on: ubuntu-latest
+    if: needs.terraform-plan.outputs.tfplanExitCode == 2
+    needs: [terraform-plan]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: AWS Assume
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE }}
+          role-session-name: GH-AWS-OIDC
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Terraform Init
+        run: |
+          terraform init \
+          -backend-config=region=${{ secrets.AWS_REGION }} \
+          -backend-config=bucket=${{ secrets.AWS_S3_BUCKET }} \
+          -backend-config=key="jslsn/just-listen-site/dns/terraform.tfstate" \
+          -backend-config=dynamodb_table=${{ secrets.AWS_DDB }} \
+          -backend-config=encrypt=true
+        working-directory: terraform/deployments/dns
+
+      - name: Download Terraform Plan
+        uses: actions/download-artifact@v4
+        with:
+          name: tfplan-dns
+          path: terraform/deployments/dns
+
+      - name: Terraform Apply
+        run: |
+          terraform apply -auto-approve tfplan
+        working-directory: terraform/deployments/dns

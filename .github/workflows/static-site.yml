@@ -1,0 +1,38 @@
+name: Upload Website
+
+on:
+  workflow_call:
+    inputs:
+      bucket_name:
+        required: true
+        type: string
+      aws_region:
+        required: true
+        type: string
+
+jobs:
+
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    # Assume AWS Role
+    - name: AWS Assume
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: ${{ secrets.AWS_ROLE }}
+        role-session-name: GH-AWS-OIDC
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Sync to S3
+      uses: jakejarvis/s3-sync-action@master
+      env:
+        AWS_S3_BUCKET: ${{ inputs.bucket_name }}
+        AWS_REGION: ${{ inputs.aws_region }}
+      with:
+        args: --acl public-read --follow-symlinks --delete
+        SOURCE_DIR: 'v1_static'
+        DEST_DIR: 'site'

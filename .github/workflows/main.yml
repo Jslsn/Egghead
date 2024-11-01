@@ -1,0 +1,53 @@
+name: Website Deployment
+
+on:
+  push:
+    branches:
+    - main
+
+env:
+  AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+  AWS_DDB: ${{ secrets.AWS_DDB }}
+  AWS_ROLE: ${{ secrets.AWS_ROLE }}
+  AWS_REGION: ${{ vars.AWS_REGION }}
+  DOMAIN_NAME: ${{ vars.DOMAIN_NAME }}
+  BUCKET_NAME: ${{ vars.BUCKET_NAME }}
+
+jobs:
+  S3-terraform:
+    uses: ./.github/workflows/s3-terraform.yml
+    secrets: inherit
+    with:
+      aws_region: ${{ env.AWS_REGION }}
+      bucket_name: ${{ vars.BUCKET_NAME }}
+
+  S3-static-site:
+    needs: [S3-terraform]
+    uses: ./.github/workflows/static-site.yml
+    secrets: inherit
+    with:
+      bucket_name: ${{ needs.S3-terraform.outputs.bucket_name }}
+      aws_region: ${{ env.AWS_REGION }}
+
+  Route-53:
+    needs: [S3-terraform, S3-static-site]
+    uses: ./.github/workflows/dns-terraform.yml
+    secrets: inherit
+    with:
+      aws_region: ${{ env.AWS_REGION }}
+      domain_name: ${{ env.DOMAIN_NAME }}
+      bucket_regional_domain_name: ${{ needs.S3-terraform.outputs.bucket_regional_domain_name }}
+      bucket_hosted_zone_id: ${{ needs.S3-terraform.outputs.bucket_hosted_zone_id }}
+      bucket_name: ${{ needs.S3-terraform.outputs.bucket_name }}
+  
+
+
+
+
+
+
+
+
+
+
+

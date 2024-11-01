@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+    <style> 
+        body {
+        margin: 0;
+        }
+
+        .parallax {
+        height: 100vh;
+        overflow-x: hidden;
+
+        perspective: 1px;
+        }
+
+        .parallax-layer {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        }
+
+        .layer1 {
+        transform: translateZ(-1.5px) scale(2.6);
+        }
+
+        .layer2 {
+        transform: translateZ(0px) scale(1);
+        }
+
+        div {
+        font-size: 50px;
+        text-align: center;
+        }
+
+        .parallax-layer.layer1 {
+        width: 100%;
+        height: 100rem;
+
+        background-image: url('background.jpg'), url('background2.jpg');
+        background-position: top left, bottom -955px left;
+        background-repeat: no-repeat;
+        }
+
+        .parallax-layer.layer2 {
+        top: 20rem;
+
+        margin: auto;
+
+        width: 50%;
+
+        background-color: #ffffff;
+
+        border-radius: 10px;
+
+        padding: 20px;
+
+        width: 75vh;
+
+        height: 125vh;
+
+        box-shadow: 0px 0px 10px #888;
+
+        }
+
+        h1 {font-size: 40px;}
+        h2 {text-align: left;font-size: 20px;}
+        p {text-align: left;font-size: 15px;}
+        a {float: left;font-size: 15px;}
+        
+        .fadedimg {
+        opacity: 0.05;
+        }
+
+</style>
+
+<head>
+    <link rel="icon" href="icon2.png">
+    <title> Just Listen </title>
+</head>
+
+<body>
+    <div class="parallax">
+        <div class="parallax-layer layer1">
+            <img src="gear5.gif" alt="luffy" style="position:relative; right:500px; top:900px;">
+            <img src="sacrifice.gif" alt="brand" class="fadedimg" style="position:relative; left:620px; bottom:60px;">
+            <img src="octopus.gif" alt="octopus" style="position:relative; left:300px; top:600px;">
+        </div>
+        <div class="parallax-layer layer2">
+            <img src="header.jpg" alt="Heading" style="width:350px;height:87.5px;">
+            <h1>Heya</h1>
+
+            <h2> About Me</h2>
+        
+            <p>I'm a cloud/platform engineer that enjoys infrastructure and automation with years of experience in AWS, along with some experience but less so in both Azure and GCP.</p>
+                
+            <p>Some specific tech I've touched includes Docker, Kubernetes, Redshift, Lambda, GitLab, GitHub Actions, EntraID/AzureAD, CloudFormation, Terraform and obviously other less buzzwordy necessities.</p>
+
+            <p>Most importantly, like to both create and learn.</p>
+            <img src="headshot1.jpg" alt="Heading" style="width:256px;height:356px;" class="center">
+            <br>
+        
+            <h2> Links </h2>
+            <a href="https://uk.linkedin.com/in/jordan-layne-60745b175">LinkedIn</a>
+            <br>
+            <a href="https://medium.com/@jordan.s.layne">Medium</a>
+            <br>
+            <a href="https://github.com/Jslsn">Personal GitHub</a>
+            <br>
+            <a href="https://www.credly.com/users/jodan-layne">Credly</a>
+            <br>
+            <a href="https://www.youtube.com/@livinlayme9858/featured">Youtube(Nothing work related)</a>
+        </div>
+    </div>
+
+</body>
