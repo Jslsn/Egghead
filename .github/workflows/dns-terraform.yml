@@ -56,7 +56,10 @@ jobs:
         id: tf-plan
         run: |
           export exitcode=0
-          terraform plan -detailed-exitcode -no-color -out tfplan || export exitcode=$?
+          terraform plan -detailed-exitcode -no-color -out tfplan \
+          -var="aws_region=${{ inputs.aws_region }}" \
+          -var="domain_name=${{ inputs.domain_name }}" \
+          -var="state_bucket=${{ secrets.AWS_S3_BUCKET }}" || export exitcode=$?
 
           echo "tfplanExitCode=$exitcode" >> $GITHUB_OUTPUT
         working-directory: terraform/deployments/dns
