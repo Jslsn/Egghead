@@ -29,9 +29,6 @@ jobs:
         role-to-assume: ${{ secrets.AWS_ROLE }}
         role-session-name: GH-AWS-OIDC
         aws-region: ${{ inputs.aws_region }}
-      permissions:
-        id-token: write
-        contents: read
 
     - name: Sync to S3
       uses: jakejarvis/s3-sync-action@master
