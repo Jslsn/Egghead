@@ -40,7 +40,7 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_ROLE }}
           role-session-name: GH-AWS-OIDC
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: ${{ inputs.aws_region }}
 
       - name: Terraform Init
         run: |
@@ -85,7 +85,7 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_ROLE }}
           role-session-name: GH-AWS-OIDC
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: ${{ inputs.aws_region }}
 
       - name: Terraform Init
         run: |
