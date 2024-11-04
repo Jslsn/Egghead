@@ -110,5 +110,5 @@ jobs:
 
       - name: Terraform Apply
         run: |
-          terraform apply -auto-approve dns-tfplan
+          terraform apply -auto-approve tfplan
         working-directory: terraform/deployments/dns
