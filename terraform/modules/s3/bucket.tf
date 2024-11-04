@@ -42,7 +42,7 @@ resource "aws_s3_bucket_website_configuration" "site_config" {
   bucket = aws_s3_bucket.site_bucket.id
 
   index_document {
-    suffix = "home.html"
+    suffix = "index.html"
   }
 
   error_document {
