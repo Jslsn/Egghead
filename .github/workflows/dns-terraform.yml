@@ -6,12 +6,6 @@ on:
       domain_name:
         required: true
         type: string
-      bucket_regional_domain_name:
-        required: true
-        type: string
-      bucket_hosted_zone_id:
-        required: true
-        type: string
       bucket_name:
         required: true
         type: string
