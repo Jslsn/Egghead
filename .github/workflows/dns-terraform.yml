@@ -23,6 +23,9 @@ jobs:
   terraform-plan:
     name: "Terraform Plan"
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     outputs:
       tfplanExitCode: ${{ steps.tf-plan.outputs.exitcode }}
 
@@ -41,9 +44,6 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE }}
           role-session-name: GH-AWS-OIDC
           aws-region: ${{ inputs.aws_region }}
-        permissions:
-          id-token: write
-          contents: read
 
       - name: Terraform Init
         run: |

@@ -15,6 +15,9 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write    # Required for AWS OIDC
+      contents: read     # Required to check out the repository
     steps:
     - name: Checkout
       uses: actions/checkout@master
