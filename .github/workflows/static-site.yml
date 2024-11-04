@@ -30,6 +30,6 @@ jobs:
     # Sync v1_static directory to S3
     - name: Sync to S3
       run: |
-        aws s3 sync v1_static s3://${{ inputs.bucket_name }}/site \
+        aws s3 sync v1_static s3://${{ inputs.bucket_name }} \
           --delete \
           --follow-symlinks

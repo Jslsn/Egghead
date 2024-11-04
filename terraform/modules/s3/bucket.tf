@@ -32,7 +32,7 @@ resource "aws_s3_bucket_policy" "site_policy" {
         Effect    = "Allow"
         Principal = "*"
         Action    = "s3:GetObject"
-        Resource  = "${aws_s3_bucket.site_bucket.arn}/site/*"
+        Resource  = "${aws_s3_bucket.site_bucket.arn}/*"
       }
     ]
   })
@@ -42,23 +42,12 @@ resource "aws_s3_bucket_website_configuration" "site_config" {
   bucket = aws_s3_bucket.site_bucket.id
 
   index_document {
-    suffix = "home.html" 
+    suffix = "home.html"
   }
 
   error_document {
-    key = "site/error.html"
+    key = "error.html"
   }
-
-  routing_rules = jsonencode([
-    {
-      Condition = {
-        KeyPrefixEquals = ""
-      }
-      Redirect = {
-        ReplaceKeyWith = "site/home.html"
-      }
-    }
-  ])
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "site_encryption" {
