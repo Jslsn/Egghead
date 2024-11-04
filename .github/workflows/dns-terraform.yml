@@ -23,9 +23,6 @@ jobs:
   terraform-plan:
     name: "Terraform Plan"
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
     outputs:
       tfplanExitCode: ${{ steps.tf-plan.outputs.exitcode }}
 

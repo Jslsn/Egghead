@@ -8,6 +8,9 @@ on:
 jobs:
   S3-terraform:
     uses: ./.github/workflows/s3-terraform.yml
+    permissions:
+      id-token: write
+      contents: read
     secrets: inherit
     with:
       aws_region: ${{ vars.AWS_REGION }}
@@ -16,6 +19,9 @@ jobs:
   S3-static-site:
     needs: [S3-terraform]
     uses: ./.github/workflows/static-site.yml
+    permissions:
+      id-token: write
+      contents: read
     secrets: inherit
     with:
       bucket_name: ${{ needs.S3-terraform.outputs.bucket_name }}
@@ -24,6 +30,9 @@ jobs:
   Route-53:
     needs: [S3-terraform, S3-static-site]
     uses: ./.github/workflows/dns-terraform.yml
+    permissions:
+      id-token: write
+      contents: read
     secrets: inherit
     with:
       aws_region: ${{ vars.AWS_REGION }}
