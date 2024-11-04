@@ -35,6 +35,9 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE }}
           role-session-name: GH-AWS-OIDC
           aws-region: ${{ inputs.aws_region }}
+        permissions:
+          id-token: write
+          contents: read
 
       # Initialize Terraform and remote state
       - name: Terraform Init
