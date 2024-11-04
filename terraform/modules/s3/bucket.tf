@@ -41,6 +41,10 @@ resource "aws_s3_bucket_policy" "site_policy" {
 resource "aws_s3_bucket_website_configuration" "site_config" {
   bucket = aws_s3_bucket.site_bucket.id
 
+  index_document {
+    suffix = "home.html" 
+  }
+
   error_document {
     key = "site/error.html"
   }
