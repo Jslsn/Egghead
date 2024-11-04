@@ -16,6 +16,18 @@ jobs:
       aws_region: ${{ vars.AWS_REGION }}
       bucket_name: ${{ vars.BUCKET_NAME }}
 
+  Debug-Test:
+    needs: [S3-terraform]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug Outputs
+        run: |
+          echo "Bucket name from S3-terraform: '${{ needs.S3-terraform.outputs.bucket_name }}'"
+          echo "Bucket regional domain: '${{ needs.S3-terraform.outputs.bucket_regional_domain_name }}'"
+          echo "Bucket hosted zone ID: '${{ needs.S3-terraform.outputs.bucket_hosted_zone_id }}'"
+          echo "AWS Region from vars: '${{ vars.AWS_REGION }}'"
+          echo "Domain name from vars: '${{ vars.DOMAIN_NAME }}'"
+
   S3-static-site:
     needs: [S3-terraform]
     uses: ./.github/workflows/static-site.yml
