@@ -3,8 +3,18 @@ resource "aws_s3_bucket" "site_bucket" {
   force_destroy = true
 }
 
+resource "aws_s3_bucket_public_access_block" "site_access" {
+  bucket = aws_s3_bucket.site_bucket.id
+
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
+}
+
 resource "aws_s3_bucket_policy" "site_policy" {
   bucket = aws_s3_bucket.site_bucket.id
+  depends_on = [aws_s3_bucket_public_access_block.site_access]
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -35,15 +45,6 @@ resource "aws_s3_bucket_website_configuration" "site_config" {
   error_document {
     key = "site/error.html"
   }
-}
-
-resource "aws_s3_bucket_public_access_block" "site_access" {
-  bucket = aws_s3_bucket.site_bucket.id
-
-  block_public_acls       = false
-  block_public_policy     = false
-  ignore_public_acls      = false
-  restrict_public_buckets = false
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "site_encryption" {
