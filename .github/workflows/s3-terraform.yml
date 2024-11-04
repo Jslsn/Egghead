@@ -106,8 +106,8 @@ jobs:
       - name: Download Terraform Plan
         uses: actions/download-artifact@v4
         with:
-          name: tfplan
-          path: terraform/deployments/bucket/tfplan
+          name: s3-tfplan
+          path: terraform/deployments/bucket
 
       # Terraform Apply
       - name: Terraform Apply
