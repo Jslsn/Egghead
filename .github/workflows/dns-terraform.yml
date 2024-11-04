@@ -24,7 +24,7 @@ jobs:
     name: "Terraform Plan"
     runs-on: ubuntu-latest
     outputs:
-      tfplanExitCode: ${{ steps.tf-plan.outputs.exitcode }}
+      tfplanExitCode: ${{ steps.tf-plan.outputs.tfplanExitCode }}
 
     steps:
       - name: Checkout
