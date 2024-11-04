@@ -53,7 +53,8 @@ jobs:
         run: |
           export exitcode=0
           terraform plan -detailed-exitcode -no-color -out tfplan || export exitcode=$?
-
+          
+          echo "Exit code is: $exitcode"  # Temp debug line
           echo "tfplanExitCode=$exitcode" >> $GITHUB_OUTPUT
         working-directory: terraform/deployments/bucket
 
@@ -66,7 +67,7 @@ jobs:
   terraform-apply:
     name: "Terraform Apply"
     runs-on: ubuntu-latest
-    if: needs.terraform-plan.outputs.tfplanExitCode == 2
+    if: needs.terraform-plan.outputs.tfplanExitCode == '2'
     needs: [terraform-plan]
     outputs:
       bucket_regional_domain_name: ${{ steps.tf-output.outputs.bucket_regional_domain_name }}
