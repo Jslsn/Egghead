@@ -37,8 +37,6 @@ jobs:
     with:
       aws_region: ${{ vars.AWS_REGION }}
       domain_name: ${{ vars.DOMAIN_NAME }}
-      bucket_regional_domain_name: ${{ needs.S3-terraform.outputs.bucket_regional_domain_name }}
-      bucket_hosted_zone_id: ${{ needs.S3-terraform.outputs.bucket_hosted_zone_id }}
       bucket_name: ${{ needs.S3-terraform.outputs.bucket_name }}
   
 
