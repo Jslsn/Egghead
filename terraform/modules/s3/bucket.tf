@@ -16,7 +16,7 @@ resource "aws_s3_bucket_ownership_controls" "site_ownership" {
   bucket = aws_s3_bucket.site_bucket.id
 
   rule {
-    object_ownership = "ObjectWriter"
+    object_ownership = "BucketOwnerPreferred"
   }
 }
 
@@ -33,11 +33,6 @@ resource "aws_s3_bucket_policy" "site_policy" {
         Principal = "*"
         Action    = "s3:GetObject"
         Resource  = "${aws_s3_bucket.site_bucket.arn}/site/*"
-        Condition = {
-          Bool = {
-            "aws:SecureTransport" : "true"
-          }
-        }
       }
     ]
   })
