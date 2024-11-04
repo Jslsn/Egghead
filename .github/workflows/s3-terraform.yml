@@ -62,8 +62,8 @@ jobs:
       - name: Publish Terraform Plan
         uses: actions/upload-artifact@v4
         with:
-          name: tfplan
-          path: terraform/deployments/bucket/
+          name: s3-tfplan
+          path: terraform/deployments/bucket/tfplan
 
   terraform-apply:
     name: "Terraform Apply"

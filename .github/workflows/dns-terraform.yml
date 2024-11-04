@@ -56,7 +56,7 @@ jobs:
         id: tf-plan
         run: |
           export exitcode=0
-          terraform plan -detailed-exitcode -no-color -out tfplan-dns \
+          terraform plan -detailed-exitcode -no-color -out tfplan \
           -var="aws_region=${{ inputs.aws_region }}" \
           -var="domain_name=${{ inputs.domain_name }}" \
           -var="state_bucket=${{ secrets.AWS_S3_BUCKET }}" || export exitcode=$?
@@ -67,8 +67,8 @@ jobs:
       - name: Publish Terraform Plan
         uses: actions/upload-artifact@v4
         with:
-          name: tfplan-dns
-          path: terraform/deployments/dns/
+          name: dns-tfplan
+          path: terraform/deployments/dns/tfplan
 
   terraform-apply:
     name: "Terraform Apply"
@@ -103,10 +103,10 @@ jobs:
       - name: Download Terraform Plan
         uses: actions/download-artifact@v4
         with:
-          name: tfplan-dns
+          name: dns-tfplan
           path: terraform/deployments/dns
 
       - name: Terraform Apply
         run: |
-          terraform apply -auto-approve tfplan
+          terraform apply -auto-approve dns-tfplan
         working-directory: terraform/deployments/dns
