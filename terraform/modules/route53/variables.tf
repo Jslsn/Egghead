@@ -3,14 +3,9 @@ variable "domain" {
   description = "The domain for the site."
 }
 
-variable "bucket_regional_domain_name" {
+variable "aws_region" {
   type        = string
-  description = "The regional domain name of the bucket."
-}
-
-variable "hosted_zone_id" {
-  type        = string
-  description = "The hosted zone ID for the bucket"
+  description = "AWS region for the S3 website endpoint"
 }
 
 variable "bucket_name" {

@@ -2,14 +2,19 @@ data "aws_route53_zone" "certificate_zone" {
   name = var.domain
 }
 
-#Set up a route53 alias record for our site.
+# Get the regional S3 website endpoint information
+data "aws_s3_bucket" "website_bucket" {
+  bucket = var.bucket_name
+}
+
 resource "aws_route53_record" "site_record" {
   zone_id = data.aws_route53_zone.certificate_zone.id
   name    = var.domain
   type    = "A"
+
   alias {
-    name                   = var.bucket_regional_domain_name
-    zone_id                = var.hosted_zone_id
+    name                   = "s3-website-${var.aws_region}.amazonaws.com"
+    zone_id                = data.aws_s3_bucket.website_bucket.hosted_zone_id
     evaluate_target_health = true
   }
 }
