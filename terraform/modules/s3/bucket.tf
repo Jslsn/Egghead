@@ -41,22 +41,20 @@ resource "aws_s3_bucket_policy" "site_policy" {
 resource "aws_s3_bucket_website_configuration" "site_config" {
   bucket = aws_s3_bucket.site_bucket.id
 
-  index_document {
-    suffix = "home.html"
-  }
-
   error_document {
     key = "site/error.html"
   }
 
-  routing_rule {
-    condition {
-      key_prefix_equals = ""  # Root path
+  routing_rules = jsonencode([
+    {
+      Condition = {
+        KeyPrefixEquals = ""
+      }
+      Redirect = {
+        ReplaceKeyWith = "site/home.html"
+      }
     }
-    redirect {
-      replace_key_prefix_with = "site/"  # Redirect to site/
-    }
-  }
+  ])
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "site_encryption" {
