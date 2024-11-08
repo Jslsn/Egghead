@@ -132,6 +132,10 @@ jobs:
         run: terraform apply -auto-approve tfplan
         working-directory: terraform/deployments/bucket
 
+      - name: Check Terraform Outputs
+        run: |
+          terraform output
+
       - name: Get Terraform Outputs
         id: tf-output
         run: |
