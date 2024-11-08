@@ -1,8 +1,3 @@
-variable "s3_endpoint" {
-  type        = string
-  description = "S3 website endpoint"
-}
-
 variable "domain" {
   type        = string
   description = "Domain name for the site"
