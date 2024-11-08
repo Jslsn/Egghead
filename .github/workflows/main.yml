@@ -15,6 +15,7 @@ jobs:
     with:
       aws_region: ${{ vars.AWS_REGION }}
       bucket_name: ${{ vars.BUCKET_NAME }}
+      domain: ${{ vars.DOMAIN_NAME }}
 
   S3-static-site:
     needs: [S3-terraform]
@@ -26,7 +27,6 @@ jobs:
     with:
       bucket_name: ${{ needs.S3-terraform.outputs.bucket_name }}
       aws_region: ${{ vars.AWS_REGION }}
-      domain: ${{ vars.DOMAIN_NAME }}
 
   Route-53:
     needs: [S3-terraform, S3-static-site]
