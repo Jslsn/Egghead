@@ -52,13 +52,6 @@ jobs:
           -backend-config=encrypt=true
         working-directory: terraform/deployments/dns
 
-      - name: Debug
-        id: tf-debug
-        run: |
-          echo "domain=${{ inputs.domain }}" 
-          echo "cloudfront_domain_name=${{ inputs.cloudfront_domain_name }}"
-          echo "cloudfront_zone_id=${{ inputs.cloudfront_zone_id }}"
-
       - name: Terraform Plan
         id: tf-plan
         run: |
