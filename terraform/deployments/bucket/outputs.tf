@@ -13,3 +13,12 @@ output "bucket_name" {
   description = "The name of the created bucket"
 }
 
+output "cloudfront_domain_name" {
+  value       = module.cloudfront.cloudfront_domain_name
+  description = "Domain name for CloudFront distribution."
+}
+
+output "cloudfront_zone_id" {
+  value       = module.cloudfront.cloudfront_zone_id
+  description = "Hosted zone for CloudFront distribution"
+}
