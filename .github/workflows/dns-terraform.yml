@@ -12,6 +12,12 @@ on:
       aws_region:
         required: true
         type: string
+      cloudfront_domain_name:
+        required: true
+        type: string
+      cloudfront_zone_id:
+        required: true
+        type: string
 
 jobs:
   terraform-plan:
@@ -53,6 +59,8 @@ jobs:
           terraform plan -detailed-exitcode -no-color -out tfplan \
           -var="aws_region=${{ inputs.aws_region }}" \
           -var="domain_name=${{ inputs.domain_name }}" \
+          -var="cloudfront_domain_name=${{ inputs.cloudfront_domain_name }}" \
+          -var="cloudfront_zone_id=${{ inputs.cloudfront_zone_id }}" \
           -var="bucket_name=${{ inputs.bucket_name }}" || export exitcode=$?
 
           echo "tfplanExitCode=$exitcode" >> $GITHUB_OUTPUT

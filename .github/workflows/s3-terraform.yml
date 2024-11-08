@@ -13,12 +13,15 @@ on:
       bucket_name:
         description: "The name of the created bucket"
         value: ${{ jobs.terraform-apply.outputs.bucket_name }}
-      bucket_regional_domain_name:
-        description: "The regional domain name of the bucket"
-        value: ${{ jobs.terraform-apply.outputs.bucket_regional_domain_name }}
       bucket_hosted_zone_id:
         description: "The hosted zone ID for the bucket"
         value: ${{ jobs.terraform-apply.outputs.bucket_hosted_zone_id }}
+      cloudfront_domain_name:
+        description: "The domain name for the cloudfront distribution"
+        value: ${{ jobs.terraform-apply.outputs.cloudfront_domain_name }}
+      cloudfront_zone_id:
+        description: "The hosted zone for the cloudfront distribution"
+        value: ${{ jobs.terraform-apply.outputs.cloudfront_zone_id }}
 
 jobs:
   terraform-plan:
@@ -64,6 +67,7 @@ jobs:
           export exitcode=0
           terraform plan -detailed-exitcode -no-color -out tfplan \
           -var="aws_region=${{ inputs.aws_region }}" \
+          -var="certificate_arn=${{ secrets.ACM_ARN }}" \
           -var="bucket_name=${{ inputs.bucket_name }}" || export exitcode=$?
           
           echo "tfplanExitCode=$exitcode" >> $GITHUB_OUTPUT
@@ -127,7 +131,8 @@ jobs:
         id: tf-output
         run: |
           echo "bucket_name=$(terraform output -raw bucket_name)" >> $GITHUB_OUTPUT
-          echo "bucket_regional_domain_name=$(terraform output -raw bucket_regional_domain_name)" >> $GITHUB_OUTPUT
           echo "bucket_hosted_zone_id=$(terraform output -raw bucket_hosted_zone_id)" >> $GITHUB_OUTPUT
+          echo "cloudfront_domain_name=$(terraform output -raw cloudfront_domain_name)" >> $GITHUB_OUTPUT
+          echo "cloudfront_zone_id=$(terraform output -raw cloudfront_zone_id)" >> $GITHUB_OUTPUT
         working-directory: terraform/deployments/bucket
 
