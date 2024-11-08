@@ -3,7 +3,7 @@ name: "DNS Terraform Plan/Apply"
 on:
   workflow_call:
     inputs:
-      domain_name:
+      domain:
         required: true
         type: string
       bucket_name:
