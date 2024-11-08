@@ -26,6 +26,7 @@ jobs:
     with:
       bucket_name: ${{ needs.S3-terraform.outputs.bucket_name }}
       aws_region: ${{ vars.AWS_REGION }}
+      domain: ${{ vars.DOMAIN_NAME }}
 
   Route-53:
     needs: [S3-terraform, S3-static-site]
@@ -36,8 +37,8 @@ jobs:
     secrets: inherit
     with:
       aws_region: ${{ vars.AWS_REGION }}
-      domain_name: ${{ vars.DOMAIN_NAME }}
-      bucket_name: ${{ needs.S3-terraform.outputs.bucket_name }}
+      domain: ${{ vars.DOMAIN_NAME }}
+      bucket: ${{ needs.S3-terraform.outputs.bucket_name }}
       cloudfront_domain_name: ${{ needs.S3-terraform.outputs.cloudfront_domain_name }}
       cloudfront_zone_id: ${{ needs.S3-terraform.outputs.cloudfront_zone_id }}
 

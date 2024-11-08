@@ -9,6 +9,9 @@ on:
       bucket_name:
         required: true
         type: string
+      domain:
+        required: true
+        type: string
     outputs:
       bucket_name:
         description: "The name of the created bucket"
@@ -67,6 +70,7 @@ jobs:
           export exitcode=0
           terraform plan -detailed-exitcode -no-color -out tfplan \
           -var="aws_region=${{ inputs.aws_region }}" \
+          -var="domain=${{ inputs.domain }}" \
           -var="certificate_arn=${{ secrets.ACM_ARN }}" \
           -var="bucket_name=${{ inputs.bucket_name }}" || export exitcode=$?
           
