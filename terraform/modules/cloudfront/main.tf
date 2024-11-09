@@ -69,6 +69,13 @@ resource "aws_s3_bucket_policy" "site_policy" {
         }
         Action   = "s3:GetObject"
         Resource = "${var.bucket_arn}/*"
+      },
+      {
+        Sid       = "PublicReadGetObject"
+        Effect    = "Allow"
+        Principal = "*"
+        Action    = "s3:GetObject"
+        Resource  = "${var.bucket_arn}/*"
       }
     ]
   })
