@@ -132,10 +132,6 @@ jobs:
         run: terraform apply -auto-approve tfplan
         working-directory: terraform/deployments/bucket
 
-      - name: Check Terraform Outputs
-        run: |
-          terraform output
-
       - name: Get Terraform Outputs
         id: tf-output
         run: |
@@ -143,4 +139,4 @@ jobs:
           echo "bucket_hosted_zone_id=$(terraform output -raw bucket_hosted_zone_id)" >> $GITHUB_OUTPUT
           echo "cloudfront_domain_name=$(terraform output -raw cloudfront_domain_name)" >> $GITHUB_OUTPUT
           echo "cloudfront_zone_id=$(terraform output -raw cloudfront_zone_id)" >> $GITHUB_OUTPUT
-
+        working-directory: terraform/deployments/bucket
