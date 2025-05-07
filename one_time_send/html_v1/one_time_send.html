@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One time send!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        textarea, input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 10px;
+            word-break: break-all;
+        }
+        .copy-btn {
+            background-color: #2196F3;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Send one time information!</h1>
+    
+    <div class="container">
+        <div class="card">
+            <h2>Temp String</h2>
+            <p>Store a text string that will be deleted after first access.</p>
+            
+            <div class="form-group">
+                <label for="stringContent">String Content:</label>
+                <textarea id="stringContent" rows="5" placeholder="Enter your string content here..."></textarea>
+            </div>
+            
+            <button id="submitString">Create Temp String</button>
+            
+            <div class="result" id="stringResult"></div>
+        </div>
+        
+        <div class="card">
+            <h2>Temp File</h2>
+            <p>Upload a file that will be deleted after first download.</p>
+            
+            <div class="form-group">
+                <label for="fileInput">Select File:</label>
+                <input type="file" id="fileInput">
+            </div>
+            
+            <button id="submitFile">Upload Temp File</button>
+            
+            <div class="result" id="fileResult"></div>
+        </div>
+    </div>
+
+    <script>
+        // API Gateway URL - replace with the actual endpoint
+        const API_URL = 'https://your-api-gateway-id.execute-api.your-region.amazonaws.com/your-stage';
+        
+        // Handle string submission
+        document.getElementById('submitString').addEventListener('click', async () => {
+            const stringContent = document.getElementById('stringContent').value;
+            if (!stringContent) {
+                alert('Please enter some text');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}/tempstring`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ content: stringContent })
+                });
+                
+                const data = await response.json();
+                
+                if (data.url) {
+                    const resultDiv = document.getElementById('stringResult');
+                    resultDiv.innerHTML = `
+                        <p><strong>Your temporary URL:</strong></p>
+                        <p>${data.url}</p>
+                        <button class="copy-btn" onclick="navigator.clipboard.writeText('${data.url}')">Copy URL</button>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Something went wrong when creating the temporary string');
+            }
+        });
+        
+        // Handle file submission
+        document.getElementById('submitFile').addEventListener('click', async () => {
+            const fileInput = document.getElementById('fileInput');
+            if (!fileInput.files.length) {
+                alert('Please select a file');
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            try {
+                // First, get a presigned URL for direct S3 upload
+                const response = await fetch(`${API_URL}/tempfile/request-upload`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        filename: file.name,
+                        contentType: file.type
+                    })
+                });
+                
+                const uploadData = await response.json();
+                
+                // Then upload the file directly to S3 with the presigned URL
+                await fetch(uploadData.uploadUrl, {
+                    method: 'PUT',
+                    body: file,
+                    headers: {
+                        'Content-Type': file.type
+                    }
+                });
+                
+                // Display the retrieval URL
+                const resultDiv = document.getElementById('fileResult');
+                resultDiv.innerHTML = `
+                    <p><strong>Your temporary URL:</strong></p>
+                    <p>${uploadData.retrievalUrl}</p>
+                    <button class="copy-btn" onclick="navigator.clipboard.writeText('${uploadData.retrievalUrl}')">Copy URL</button>
+                `;
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Something went wrong when uploading the file');
+            }
+        });
+    </script>
+</body>
+</html>
