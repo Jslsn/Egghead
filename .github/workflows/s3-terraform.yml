@@ -131,8 +131,8 @@ jobs:
   terraform-output:
     name: "Terraform Outputs"
     runs-on: ubuntu-latest
-    if: ${{ !failure() || !cancelled() }}
-    needs: [terraform-apply]
+    if: always() && ${{ !failure() || !cancelled() }}
+    needs: [terraform-plan,terraform-apply]
     outputs:
       bucket_hosted_zone_id: ${{ steps.tf-output.outputs.bucket_hosted_zone_id }}
       bucket_name: ${{ steps.tf-output.outputs.bucket_name }}
@@ -147,8 +147,6 @@ jobs:
       # Install the latest Terraform CLI
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
-        with: 
-          terraform_wrapper: false
 
       # Assume AWS Role
       - name: AWS Assume
