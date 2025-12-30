@@ -131,7 +131,7 @@ jobs:
   terraform-output:
     name: "Terraform Outputs"
     runs-on: ubuntu-latest
-    if: needs.terraform-apply.result == 'success' || needs.terraform-apply.result == 'skipped'
+    if: always() && needs.terraform-apply.result == 'success' || needs.terraform-apply.result == 'skipped'
     needs: [terraform-apply]
     outputs:
       bucket_hosted_zone_id: ${{ steps.tf-output.outputs.bucket_hosted_zone_id }}
