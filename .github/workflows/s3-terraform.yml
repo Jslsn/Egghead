@@ -147,6 +147,7 @@ jobs:
       # Install the latest Terraform CLI
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
+        terraform_wrapper: false
 
       # Assume AWS Role
       - name: AWS Assume
