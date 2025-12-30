@@ -132,6 +132,19 @@ jobs:
         run: terraform apply -auto-approve tfplan
         working-directory: terraform/deployments/bucket
 
+
+  terraform-output:
+    name: "Terraform Outputs"
+    runs-on: ubuntu-latest
+    if: needs.terraform-apply.result == 'success' || needs.terraform-apply.result == 'skipped'
+    needs: [terraform-apply]
+    outputs:
+      bucket_hosted_zone_id: ${{ steps.tf-output.outputs.bucket_hosted_zone_id }}
+      bucket_name: ${{ steps.tf-output.outputs.bucket_name }}
+      cloudfront_domain_name: ${{ steps.tf-output.outputs.cloudfront_domain_name }}
+      cloudfront_zone_id: ${{ steps.tf-output.outputs.cloudfront_zone_id }}
+    
+    Steps:
       - name: Get Terraform Outputs
         id: tf-output
         run: |
