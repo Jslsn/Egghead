@@ -15,16 +15,16 @@ on:
     outputs:
       bucket_name:
         description: "The name of the created bucket"
-        value: ${{ jobs.terraform-apply.outputs.bucket_name }}
+        value: ${{ jobs.terraform-output.outputs.bucket_name }}
       bucket_hosted_zone_id:
         description: "The hosted zone ID for the bucket"
-        value: ${{ jobs.terraform-apply.outputs.bucket_hosted_zone_id }}
+        value: ${{ jobs.terraform-output.outputs.bucket_hosted_zone_id }}
       cloudfront_domain_name:
         description: "The domain name for the cloudfront distribution"
-        value: ${{ jobs.terraform-apply.outputs.cloudfront_domain_name }}
+        value: ${{ jobs.terraform-output.outputs.cloudfront_domain_name }}
       cloudfront_zone_id:
         description: "The hosted zone for the cloudfront distribution"
-        value: ${{ jobs.terraform-apply.outputs.cloudfront_zone_id }}
+        value: ${{ jobs.terraform-output.outputs.cloudfront_zone_id }}
 
 jobs:
   terraform-plan:
@@ -174,9 +174,4 @@ jobs:
           echo "bucket_hosted_zone_id=$(terraform output -raw bucket_hosted_zone_id)" >> $GITHUB_OUTPUT
           echo "cloudfront_domain_name=$(terraform output -raw cloudfront_domain_name)" >> $GITHUB_OUTPUT
           echo "cloudfront_zone_id=$(terraform output -raw cloudfront_zone_id)" >> $GITHUB_OUTPUT
-          echo "hi"
-          terraform output bucket_name
-          terraform output bucket_hosted_zone_id
-          terraform output cloudfront_domain_name
-          terraform output cloudfront_zone_id
         working-directory: terraform/deployments/bucket
