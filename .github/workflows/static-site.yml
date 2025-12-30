@@ -25,11 +25,11 @@ jobs:
       with:
         role-to-assume: ${{ secrets.AWS_ROLE }}
         role-session-name: GH-AWS-OIDC
-        aws-region: ${{ inputs.aws_region }}
+        aws-region: ${{ secrets.AWS_REGION }}
 
     # Sync v1_static directory to S3
     - name: Sync to S3
       run: |
-        aws s3 sync v1_static s3://${{ inputs.bucket_name }} \
+        aws s3 sync v1_static s3://${{ secrets.AWS_S3_BUCKET }} \
           --delete \
           --follow-symlinks
