@@ -144,7 +144,7 @@ jobs:
       cloudfront_domain_name: ${{ steps.tf-output.outputs.cloudfront_domain_name }}
       cloudfront_zone_id: ${{ steps.tf-output.outputs.cloudfront_zone_id }}
     
-    Steps:
+    steps:
       - name: Get Terraform Outputs
         id: tf-output
         run: |
