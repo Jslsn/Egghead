@@ -140,6 +140,25 @@ jobs:
       cloudfront_zone_id: ${{ steps.tf-output.outputs.cloudfront_zone_id }}
     
     steps:
+      # Checkout the repo to the runner
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Install the latest Terraform CLI
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      # Initialize Terraform and remote state
+      - name: Terraform Init
+        run: |
+          terraform init \
+          -backend-config=region=${{ secrets.AWS_REGION }} \
+          -backend-config=bucket=${{ secrets.AWS_S3_BUCKET }} \
+          -backend-config=key="jslsn/just-listen-site/s3/terraform.tfstate" \
+          -backend-config=use_lockfile=true \
+          -backend-config=encrypt=true
+        working-directory: terraform/deployments/bucket
+
       - name: Get Terraform Outputs
         id: tf-output
         run: |
