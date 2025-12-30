@@ -174,6 +174,7 @@ jobs:
           echo "bucket_hosted_zone_id=$(terraform output -raw bucket_hosted_zone_id)" >> $GITHUB_OUTPUT
           echo "cloudfront_domain_name=$(terraform output -raw cloudfront_domain_name)" >> $GITHUB_OUTPUT
           echo "cloudfront_zone_id=$(terraform output -raw cloudfront_zone_id)" >> $GITHUB_OUTPUT
+          echo "hi"
           terraform output -raw bucket_name
           terraform output -raw bucket_hosted_zone_id
           terraform output -raw cloudfront_domain_name
