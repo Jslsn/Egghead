@@ -148,6 +148,14 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
+      # Assume AWS Role
+      - name: AWS Assume
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE }}
+          role-session-name: GH-AWS-OIDC
+          aws-region: ${{ inputs.aws_region }}
+
       # Initialize Terraform and remote state
       - name: Terraform Init
         run: |
