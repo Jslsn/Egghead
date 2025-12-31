@@ -11,7 +11,7 @@ This will be improved and explained later, but for now, this should be a rough r
 
 I recommend ammending the index.html and media files in the v1_static directory to be less me and more you if you actually decide to deploy this for whatever reason. 
 
-    - If you just want to see the result, just check out "just-listen.net" instead of all this trouble.
+- If you just want to see the result, just check out "just-listen.net" instead of all this trouble.
 
 
 ### Requirments
