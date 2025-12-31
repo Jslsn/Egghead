@@ -35,7 +35,7 @@ To Deploy:
         - AWS_REGION
         - BUCKET_NAME
         - DOMAIN_NAME
-    Secrets:
+    - Secrets:
         - ACM_ARN
         - AWS_DDB
         - AWS_ROLE
