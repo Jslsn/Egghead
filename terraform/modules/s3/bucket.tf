@@ -20,18 +20,6 @@ resource "aws_s3_bucket_ownership_controls" "site_ownership" {
   }
 }
 
-resource "aws_s3_bucket_website_configuration" "site_config" {
-  bucket = aws_s3_bucket.site_bucket.id
-
-  index_document {
-    suffix = "index.html"
-  }
-
-  error_document {
-    key = "error.html"
-  }
-}
-
 resource "aws_s3_bucket_server_side_encryption_configuration" "site_encryption" {
   bucket = aws_s3_bucket.site_bucket.id
 

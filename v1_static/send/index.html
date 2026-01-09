@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One time send!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        textarea, input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 10px;
+            word-break: break-all;
+        }
+        .copy-btn {
+            background-color: #2196F3;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Send one time information!</h1>
+    
+    <div class="container">
+        <div class="card">
+            <h2>Temp String</h2>
+            <p>Store a text string that will be deleted after first access.</p>
+            
+            <div class="form-group">
+                <textarea id="stringContent" rows="5" placeholder="Enter your text here..."></textarea>
+            </div>
+            
+            <button id="submitString">Create Temp String</button>
+        </div>
+    </div>
+</body>
+</html>
