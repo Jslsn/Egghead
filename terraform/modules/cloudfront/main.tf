@@ -65,18 +65,11 @@ resource "aws_s3_bucket_policy" "site_policy" {
         Sid    = "AllowCloudFrontAccess"
         Effect = "Allow"
         Principal = {
-          "AWS" : data.aws_caller_identity.current.account_id
+          "AWS" : aws_cloudfront_distribution.site_distribution.arn
         }
         Action   = "s3:GetObject"
         Resource = "${var.bucket_arn}/*"
       },
-      {
-        Sid       = "PublicReadGetObject"
-        Effect    = "Allow"
-        Principal = "*"
-        Action    = "s3:GetObject"
-        Resource  = "${var.bucket_arn}/*"
-      }
     ]
   })
 }
