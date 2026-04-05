@@ -65,12 +65,14 @@ resource "aws_s3_bucket_policy" "site_policy" {
         Sid    = "AllowCloudFrontAccess"
         Effect = "Allow"
         Principal = {
-          "Service" : "cloudfront.amazonaws.com"
+          Service = "cloudfront.amazonaws.com"
         }
         Action   = "s3:GetObject"
         Resource = "${var.bucket_arn}/*"
         Condition = {
-            ArnLike = aws_cloudfront_distribution.site_distribution.arn
+            ArnLike = {
+              "AWS:SourceArn" = aws_cloudfront_distribution.site_distribution.arn
+              }
         },
       }
     ]
