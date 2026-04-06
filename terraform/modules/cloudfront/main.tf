@@ -70,7 +70,7 @@ resource "aws_s3_bucket_policy" "site_policy" {
         Action   = "s3:GetObject"
         Resource = "${var.bucket_arn}/*"
         Condition = {
-            ArnLike = {
+            StringLike = {
               "AWS:SourceArn" = aws_cloudfront_distribution.site_distribution.arn
               }
         },
