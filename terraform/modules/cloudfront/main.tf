@@ -1,6 +1,7 @@
 resource "aws_cloudfront_distribution" "site_distribution" {
   origin {
     domain_name = var.s3_endpoint
+    origin_access_control_id = aws_cloudfront_origin_access_control.s3_oac.id
     origin_id   = "S3Origin"
 
     custom_origin_config {
@@ -51,6 +52,13 @@ resource "aws_cloudfront_distribution" "site_distribution" {
       restriction_type = "none"
     }
   }
+}
+
+resource "aws_cloudfront_origin_access_control" "s3_oac" {
+  name                              = var.s3_endpoint
+  origin_access_control_origin_type = "s3"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
 }
 
 data "aws_caller_identity" "current" {}
